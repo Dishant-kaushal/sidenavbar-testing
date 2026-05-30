@@ -1,0 +1,27 @@
+import { type ReactNode } from 'react';
+export interface DrawerStackEntry {
+    id: string;
+    onDismiss: () => void;
+}
+export interface DrawerStackContextValue {
+    /** Register a drawer and receive its 1-based stacking level. */
+    register: (id: string, onDismiss: () => void) => number;
+    /** Unregister when the drawer unmounts. */
+    unregister: (id: string) => void;
+    /** Read the current level of a drawer by id. Returns 0 if not registered. */
+    getLevel: (id: string) => number;
+    /** Fire `onDismiss` on every registered drawer, deepest first. */
+    closeAll: () => void;
+    /** Total number of currently registered (open) drawers. Used by each
+     *  drawer to compute how many levels are stacked above it (peek depth). */
+    totalLevels: number;
+}
+export interface DrawerStackProviderProps {
+    children: ReactNode;
+}
+export declare function DrawerStackProvider({ children }: DrawerStackProviderProps): JSX.Element;
+export declare namespace DrawerStackProvider {
+    var displayName: string;
+}
+/** Read the nearest DrawerStackProvider, or `null` if none is mounted. */
+export declare function useDrawerStack(): DrawerStackContextValue | null;
